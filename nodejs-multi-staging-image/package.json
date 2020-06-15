@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build:nginx": "rimraf dist && npm run generate-imported-components && npm run create-bundle:nginx",
+    "create-bundle:nginx": "cross-env BABEL_ENV=client parcel build app/index.html -d dist/client --public-url ."
+  },
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
+

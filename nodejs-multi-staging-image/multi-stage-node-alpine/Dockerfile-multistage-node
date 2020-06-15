@@ -1,0 +1,32 @@
+FROM node:11-alpine AS build
+
+RUN apk add --update --no-cache \
+    python \
+    make 
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm prune --production
+
+
+
+
+FROM node:11.10.0-alpine
+
+EXPOSE 8080
+
+WORKDIR /usr/src/service
+
+COPY --from=build /usr/src/app/node_modules node_modules
+COPY --from=build /usr/src/app/ .
+
+USER node
+
+CMD ["node", "./server.js"]
+
